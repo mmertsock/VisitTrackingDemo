@@ -49,7 +49,7 @@ class VisitStore {
     init() {
         let itemsAsJSON = UserDefaults.standard.stringArray(forKey: "visitStore-items") ?? []
         let decoder = JSONDecoder()
-        items = itemsAsJSON.flatMap {
+        items = itemsAsJSON.compactMap {
             json in
             return try? decoder.decode(VisitItem.self, from: json.data(using: .utf8)!)
         }
@@ -94,7 +94,7 @@ class VisitStore {
     
     private func commit() {
         let encoder = JSONEncoder()
-        let jsonArray = items.flatMap {
+        let jsonArray = items.compactMap {
             item in
             return String(data: (try! encoder.encode(item)), encoding: .utf8)
         }

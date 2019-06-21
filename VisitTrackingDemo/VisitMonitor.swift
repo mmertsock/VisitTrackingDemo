@@ -24,6 +24,9 @@ extension CLAuthorizationStatus: CustomDebugStringConvertible {
         case .denied: return "denied"
         case .notDetermined: return "notDetermined"
         case .restricted: return "restricted"
+        @unknown default:
+            assertionFailure("Unknown CLAuthorizationStatus")
+            return "unknown"
         }
     }
 }
@@ -69,7 +72,7 @@ class VisitMonitor: NSObject, CLLocationManagerDelegate {
         let content = UNMutableNotificationContent()
         content.title = "Location Update"
         content.body = "Logged \(visit.isArrival ? "an Arrival" : "a Departure") visit: (\(visit.coordinate.latitude), \(visit.coordinate.longitude))"
-        content.sound = UNNotificationSound.default()
+        content.sound = .default
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
         UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
         
